@@ -182,6 +182,19 @@ wheels = [
 ]
 
 [[package]]
+name = "grpcio-reflection"
+version = "1.66.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "grpcio" },
+    { name = "protobuf" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f1/1c/8930a313a4cd60198921cedd4f6c2c88c282280780eb41995ddd980d6de9/grpcio_reflection-1.66.1.tar.gz", hash = "sha256:dbc39d2ccce82bf13046b145b97bc9542b3b26419a848ae64a5b72634ded14ca", size = 18651, upload-time = "2024-08-28T20:42:36.99Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bf/97/d5b91e9b6575d787e89201650976c4ec07356c0ac7305cb17dbb8357635b/grpcio_reflection-1.66.1-py3-none-any.whl", hash = "sha256:bbac3c644d34647fbbec9696904008ba3eef354c2168315fe27a8a52ae79dec6", size = 22617, upload-time = "2024-08-28T20:40:50.068Z" },
+]
+
+[[package]]
 name = "grpcio-tools"
 version = "1.66.1"
 source = { registry = "https://pypi.org/simple" }
@@ -363,6 +376,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "grpcio" },
+    { name = "grpcio-reflection" },
     { name = "grpcio-tools" },
     { name = "joblib" },
     { name = "pandas" },
@@ -379,6 +393,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "grpcio", specifier = "==1.66.1" },
+    { name = "grpcio-reflection", specifier = ">=1.66.1" },
     { name = "grpcio-tools", specifier = "==1.66.1" },
     { name = "joblib", specifier = ">=1.5.2" },
     { name = "pandas", specifier = ">=2.3.3" },
