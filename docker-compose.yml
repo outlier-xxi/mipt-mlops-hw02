@@ -1,0 +1,21 @@
+services:
+  wine-quality-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wine-quality-grpc
+    ports:
+      - "50051:50051"
+    environment:
+      - MODEL_PATH=ml_grpc_service/models/wine_quality_model.pkl
+      - SCALER_PATH=ml_grpc_service/models/wine_scaler.pkl
+      - MODEL_VERSION=v1.0.0
+      - PORT=50051
+      - MAX_WORKERS=4
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "grpcurl", "-plaintext", "localhost:50051", "mlservice.v1.PredictionService/Health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
