@@ -1,5 +1,6 @@
 import grpc, os
 from concurrent import futures
+from grpc_reflection.v1alpha import reflection
 from ml_grpc_service import model_pb2, model_pb2_grpc
 from ml_grpc_service.server.inference import ModelRunner
 from ml_grpc_service.server.validation import features_to_dict, ValidationError
@@ -40,6 +41,14 @@ def serve():
     ]
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=MAX_WORKERS), options=options)
     model_pb2_grpc.add_PredictionServiceServicer_to_server(PredictionService(), server)
+
+    # Enable server reflection
+    SERVICE_NAMES = (
+        model_pb2.DESCRIPTOR.services_by_name['PredictionService'].full_name,
+        reflection.SERVICE_NAME,
+    )
+    reflection.enable_server_reflection(SERVICE_NAMES, server)
+
     server.add_insecure_port(f"[::]:{PORT}")
     server.start()
     scaler_info = f", scaler={SCALER_PATH}" if SCALER_PATH else ""
