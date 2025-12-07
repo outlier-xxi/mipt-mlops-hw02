@@ -6,12 +6,13 @@ from ml_grpc_service.server.validation import features_to_dict, ValidationError
 
 MODEL_PATH = os.getenv("MODEL_PATH", "ml_grpc_service/models/model.pkl")
 MODEL_VERSION = os.getenv("MODEL_VERSION", "v0.0.1")
+SCALER_PATH = os.getenv("SCALER_PATH", None)  
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "4"))
 PORT = int(os.getenv("PORT", "50051"))
 
 class PredictionService(model_pb2_grpc.PredictionServiceServicer):
     def __init__(self):
-        self.runner = ModelRunner(MODEL_PATH, version=MODEL_VERSION)
+        self.runner = ModelRunner(MODEL_PATH, version=MODEL_VERSION, scaler_path=SCALER_PATH)
 
     def Health(self, request, context):
         return model_pb2.HealthResponse(status="ok", model_version=self.runner.version)
@@ -41,7 +42,8 @@ def serve():
     model_pb2_grpc.add_PredictionServiceServicer_to_server(PredictionService(), server)
     server.add_insecure_port(f"[::]:{PORT}")
     server.start()
-    print(f"gRPC server started on :{PORT}, model={MODEL_PATH}, version={MODEL_VERSION}")
+    scaler_info = f", scaler={SCALER_PATH}" if SCALER_PATH else ""
+    print(f"gRPC server started on :{PORT}, model={MODEL_PATH}, version={MODEL_VERSION}{scaler_info}")
     server.wait_for_termination()
 
 if __name__ == "__main__":

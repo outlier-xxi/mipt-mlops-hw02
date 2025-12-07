@@ -9,21 +9,21 @@ service PredictionService {
 message HealthRequest {}
 
 message HealthResponse {
-  string status = 1;         // "ok"
-  string model_version = 2;  // e.g. "v1.0.3"
+  string status = 1;                // "ok"
+  string model_version = 2;         // e.g. "v1.0.3"
 }
 
 message Feature {
-  string name = 1;
-  double value = 2;
+  string name = 1;                  // Feature name (e.g., "fixed acidity")
+  double value = 2;                 // Feature value (e.g., 7.4)
 }
 
 message PredictRequest {
-  repeated Feature features = 1;  // [{name:"sepal_length", value:5.1}, ...]
+  repeated Feature features = 1;    // List of all features
 }
 
 message PredictResponse {
-  string prediction = 1;          // "setosa"
-  double confidence = 2;          // 0.93 (опционально)
+  string prediction = 1;          
+  double confidence = 2;          
   string model_version = 3;
 }
